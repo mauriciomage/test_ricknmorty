@@ -1,12 +1,13 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { CharacterState } from './reducers';
+import { CharacterState, characterStateFeatureKey } from './reducers';
 
-export const selectCharacterState =
-  createFeatureSelector<CharacterState>('character');
+const selectCharacterState = createFeatureSelector<CharacterState>(
+  characterStateFeatureKey
+);
 
 export const selectAllCharacters = createSelector(
   selectCharacterState,
-  (state: CharacterState) => state.characters?.results
+  (state: CharacterState) => state.characters?.results || []
 );
 
 export const selectCharacterDetail = createSelector(
@@ -16,7 +17,9 @@ export const selectCharacterDetail = createSelector(
 
 export const selectLoading = createSelector(
   selectCharacterState,
-  (state: CharacterState) => state.loading
+  (state: CharacterState) => {
+    return state.loading;
+  }
 );
 
 export const selectCurrentPage = createSelector(

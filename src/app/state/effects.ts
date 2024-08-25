@@ -11,7 +11,7 @@ export class CharacterEffects {
     this.actions$.pipe(
       ofType(CharacterActions.loadCharacters),
       mergeMap(({ page }) =>
-        this.service.getCharacters(page).pipe(
+        this.characterService.getCharacters(page).pipe(
           map((data) => CharacterActions.loadCharactersSuccess({ data })),
           catchError((error) =>
             of(CharacterActions.loadCharactersFailure({ error }))
@@ -25,7 +25,7 @@ export class CharacterEffects {
     this.actions$.pipe(
       ofType(CharacterActions.searchCharacters),
       switchMap(({ query }) =>
-        this.service.searchCharacters(query).pipe(
+        this.characterService.searchCharacters(query).pipe(
           map((data) => CharacterActions.searchCharactersSuccess({ data })),
           catchError((error) =>
             of(CharacterActions.loadCharactersFailure({ error }))
@@ -39,7 +39,7 @@ export class CharacterEffects {
     this.actions$.pipe(
       ofType(CharacterActions.loadCharacterDetail),
       switchMap(({ id }) =>
-        this.service.getCharacterDetail(id).pipe(
+        this.characterService.getCharacterDetail(id).pipe(
           map((character) =>
             CharacterActions.loadCharacterDetailSuccess({ character })
           ),
@@ -51,5 +51,8 @@ export class CharacterEffects {
     )
   );
 
-  constructor(private actions$: Actions, private service: MainService) {}
+  constructor(
+    private actions$: Actions,
+    private characterService: MainService
+  ) {}
 }

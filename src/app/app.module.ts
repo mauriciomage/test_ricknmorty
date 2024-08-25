@@ -9,9 +9,10 @@ import { AppComponent } from './app.component';
 import { CharacterListComponent } from './components/character-list/character-list.component';
 import { CharacterDetailComponent } from './components/character-detail/character-detail.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { characterReducer } from './state/reducers';
+import { characterReducer, characterStateFeatureKey } from './state/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { CharacterEffects } from './state/effects';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,10 +24,22 @@ import { CharacterEffects } from './state/effects';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot(characterReducer, {}),
+    HttpClientModule,
+    StoreModule.forRoot(
+      { [characterStateFeatureKey]: characterReducer },
+      {
+        runtimeChecks: {
+          strictStateImmutability: true,
+          strictActionImmutability: true,
+          strictStateSerializability: true,
+          strictActionSerializability: true,
+        },
+      }
+    ),
     EffectsModule.forRoot([CharacterEffects]),
     StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retiene los últimos 25 estados
+      maxAge: 25,
+      logOnly: false,
     }),
   ],
   providers: [],

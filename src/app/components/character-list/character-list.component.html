@@ -1,1 +1,18 @@
-<p>character-list works!</p>
+<div class="search-bar">
+  <input type="text" placeholder="Search characters..." (input)="onSearch()" />
+</div>
+<div class="character-list">
+  <div *ngIf="loading$ | async" class="loading">Loading...</div>
+  <div *ngFor="let character of characters$ | async" class="character-card">
+    <a [routerLink]="['/character', character.id]">
+      <img [src]="character.image" alt="{{ character.name }}" />
+      <h2>{{ character.name }}</h2>
+    </a>
+  </div>
+</div>
+<div class="pagination">
+  <button (click)="onPreviousPage()" [disabled]="currentPage === 1">
+    Previous
+  </button>
+  <button (click)="onNextPage()">Next</button>
+</div>

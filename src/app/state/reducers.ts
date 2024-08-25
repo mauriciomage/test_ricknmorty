@@ -1,6 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
+import { Main, Character } from '../interfaces/main.interface';
 import * as CharacterActions from './actions';
-import { Character, Main } from '../interfaces/main.interface';
+
+export const characterStateFeatureKey = 'charactersState';
 
 export interface CharacterState {
   characters: Main | null;
