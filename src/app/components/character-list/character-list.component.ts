@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Character } from '../../interfaces/main.interface';
 import * as fromCharacterSelectors from '../../state/selectors';
 import * as fromCharacterActions from '../../state/actions';
+import { loadCharacters } from '../../state/actions';
+import { selectCharactersByPage } from '../../state/selectors';
 
 @Component({
   selector: 'app-character-list',
@@ -18,15 +20,19 @@ export class CharacterListComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.loadCharacters();
-    this.loading$ = this.store.select(fromCharacterSelectors.selectLoading);
-    this.characters$ = this.store.select(
-      fromCharacterSelectors.selectAllCharacters
-    );
+    // this.loadCharacters();
+    // this.loading$ = this.store.select(fromCharacterSelectors.selectLoading);
+    // this.characters$ = this.store.select(
+    //   fromCharacterSelectors.selectAllCharacters
+    // );
 
     this.store
       .select(fromCharacterSelectors.selectCurrentPage)
-      .subscribe((page) => (this.currentPage = page));
+      .subscribe((page) => {
+        this.currentPage = page;
+        this.characters$ = this.store.select(selectCharactersByPage(page));
+        this.store.dispatch(loadCharacters({ page }));
+      });
   }
 
   loadCharacters(): void {
@@ -52,8 +58,6 @@ export class CharacterListComponent implements OnInit {
   }
 
   onNextPage(): void {
-    this.store.dispatch(
-      fromCharacterActions.loadCharacters({ page: this.currentPage + 1 })
-    );
+    this.store.dispatch(loadCharacters({ page: this.currentPage + 1 }));
   }
 }

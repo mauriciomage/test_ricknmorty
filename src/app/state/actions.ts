@@ -7,7 +7,7 @@ export const loadCharacters = createAction(
 );
 export const loadCharactersSuccess = createAction(
   '[Character API] Load Characters Success',
-  props<{ data: Main }>()
+  props<{ data: Main; page: number }>()
 );
 export const loadCharactersFailure = createAction(
   '[Character API] Load Characters Failure',

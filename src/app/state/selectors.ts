@@ -10,6 +10,12 @@ export const selectAllCharacters = createSelector(
   (state: CharacterState) => state.characters?.results || []
 );
 
+export const selectCharactersByPage = (page: number) =>
+  createSelector(
+    selectCharacterState,
+    (state: CharacterState) => state.charactersByPage[page] || []
+  );
+
 export const selectCharacterDetail = createSelector(
   selectCharacterState,
   (state: CharacterState) => state.characterDetail

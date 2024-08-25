@@ -6,6 +6,7 @@ export const characterStateFeatureKey = 'charactersState';
 
 export interface CharacterState {
   characters: Main | null;
+  charactersByPage: { [page: number]: Character[] };
   characterDetail: Character | null;
   loading: boolean;
   error: any;
@@ -15,6 +16,7 @@ export interface CharacterState {
 
 export const initialState: CharacterState = {
   characters: null,
+  charactersByPage: {},
   characterDetail: null,
   loading: false,
   error: null,
@@ -28,17 +30,16 @@ export const characterReducer = createReducer(
     ...state,
     loading: true,
     currentPage: page,
-    error: null,
   })),
-  on(CharacterActions.loadCharactersSuccess, (state, { data }) => ({
+  on(CharacterActions.loadCharactersSuccess, (state, { data, page }) => ({
     ...state,
-    characters: data,
+    charactersByPage: { ...state.charactersByPage, [page]: data.results },
     loading: false,
   })),
   on(CharacterActions.loadCharactersFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error,
+    error,
   })),
   on(CharacterActions.searchCharacters, (state, { query }) => ({
     ...state,
