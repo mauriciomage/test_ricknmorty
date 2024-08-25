@@ -10,6 +10,8 @@ import { CharacterListComponent } from './components/character-list/character-li
 import { CharacterDetailComponent } from './components/character-detail/character-detail.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { characterReducer } from './state/reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { CharacterEffects } from './state/effects';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { characterReducer } from './state/reducers';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot(characterReducer, {}),
+    EffectsModule.forRoot([CharacterEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retiene los últimos 25 estados
     }),
